@@ -33,7 +33,7 @@ def alphabet_indexes_dict(alphabet=[]):
         ord_a = ord('a')
         for letter_ind in range(ord('a'), ord('z')+1):
             d[chr(letter_ind)] = letter_ind - ord_a
-            aplhabet.append(chr(letter_ind))
+            alphabet.append(chr(letter_ind))
     else:
         for letter_ind in range(len(alphabet)):
             d[alphabet[letter_ind]] = letter_ind 
@@ -119,13 +119,14 @@ if len(sys.argv) != 3:
 P = read_file(sys.argv[1])
 T = read_file(sys.argv[2])
 
-a = ['a', 't', 'g', 'c']  # if alphabet not given: a = []
+a = []
+#a = ['a', 't', 'g', 'c']  # if alphabet not given: a = []
 d, alphabet = alphabet_indexes_dict(a)
 table_bcr = BCR_table(P, d, alphabet)
 list_gsr = GSR_list(P)
 m = len(P)
 locus_list = []  # list of locuses
-i = 0  # index of compearing T[i:i+m] with P[i:i+m] 
+i = 0  # index of compearing T[i:i+m] with P[::] 
 while i <= len(T) - m:
 
     #print(T)         
@@ -134,15 +135,15 @@ while i <= len(T) - m:
     suf_len = max_match_suffix(T, P, i)
     if suf_len == -1:
         locus_list.append(i+1)  # indexing should be from 1 (in program - from 0)
-        i += list_gsr[1]
+        i += list_gsr[m-1]
         continue
 
     shift_gsr = list_gsr[suf_len]
     ind = d[T[i + m - suf_len - 1]]  # index of mismach letter in alphabet
     shift_bcr = table_bcr[ind][m - suf_len - 1]
-
+    #print('bcr=', shift_bcr, ' gsr=', shift_gsr, sep='', end='->')
     if suf_len == 0:
-        i += shift_bcr
+        i += shift_bcr 
     else:
         i += max(shift_gsr, shift_bcr)
 
