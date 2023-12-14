@@ -1,2 +1,7 @@
 # BioInformatics
-final project
+Проект по реализации алгоритма Бойера-Мура
+
+Основная программа main.py
+
+Её запуск осуществяется командой
+python main.py P.fa T.fa
